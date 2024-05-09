@@ -36,7 +36,7 @@ pipeline {
     stage('Security Scan') {
       steps {
         echo 'Scanning for security vulnerabilities...'
-        sh 'dependency-check --project MyProject --scan https://github.com/bmn-254/jenkins-pipeline.git'
+        sh 'dependency-check --project MyProject
       }
        post {
         always {
