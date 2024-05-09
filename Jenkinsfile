@@ -1,5 +1,5 @@
 pipeline {
-  agent any // Use any available agent (Jenkins node)
+  agent any
 
   stages {
     stage('Build') {
@@ -18,7 +18,7 @@ pipeline {
         always {
           emailext(
             to: 'nkongebryan44@gmail.com',
-            subject: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER Test Results",
+            subject: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} Test Results",
             body: "The Test stage of the Build ${env.JOB_NAME} #${env.BUILD_NUMBER} has finished with status: ${currentBuild.currentResult}",
             attachLog: true
           )
@@ -38,7 +38,7 @@ pipeline {
         echo 'Scanning for security vulnerabilities...'
         sh 'dependency-check --project MyProject'
       }
-       post {
+      post {
         always {
           emailext(
             to: 'nkongebryan44@gmail.com',
