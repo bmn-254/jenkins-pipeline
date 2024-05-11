@@ -1,83 +1,55 @@
 pipeline {
-  agent any
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo "Use a build automation tool such as Maven or Gradle to compile and package the code."
+            }
+           
+            post {
+                success {
+                    mail to: "nkongebryan44@gmail.com",
+                    subject: "Build status",
+                    body: "The build was successful!"
+                }
+            }
+        } // Close stage('Build')
 
-  stages {
-    stage('Build') {
-      steps {
-        echo 'Project Building Begins...'
-       // powershell 'mvn clean package'
-      }
-    }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo " Use test automation tools like JUnit or TestNG for unit tests and integration tests."
+            }
+        } // Close stage('Unit and Integration Tests')
 
-    stage('Unit and Integration Tests') {
-      steps {
-        echo 'Running unit and integration tests...'
-       // powershell 'mvn test'
-      }
-      post {
-        always {
-          emailext(
-            to: 'nkongebryan44@gmail.com',
-            subject: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} Test Results",
-            body: "The Test stage of the Build ${env.JOB_NAME} #${env.BUILD_NUMBER} has finished with status: ${currentBuild.currentResult}",
-            attachLog: true
-          )
-        }
-      }
-    }
+        stage('Code Analysis') {
+            steps {
+                echo " Integrate a code analysis tool like SonarQube or Checkstyle for code quality checks."
+            }
+        } // Close stage('Code Analysis')
 
-    stage('Code Analysis') {
-      steps {
-        echo 'Performing static code analysis...'
-       // powershell 'sonar-scanner'
-      }
-    }
+        stage('Security Scan') {
+            steps {
+                echo " Perform a security scan using a tool like OWASP ZAP or SonarQube Security Scanner."
+            }
+        } // Close stage('Security Scan')
 
-    stage('Security Scan') {
-      steps {
-        echo 'Scanning for security vulnerabilities...'
-       // powershell 'dependency-check --project MyProject'
-      }
-      post {
-        always {
-          emailext(
-            to: 'nkongebryan44@gmail.com',
-            subject: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} Security Scan Results",
-            body: "The Security Scan stage of Build ${env.JOB_NAME} #${env.BUILD_NUMBER} has finished with status: ${currentBuild.currentResult}",
-            attachLog: true
-          )
-        }
-      }
-    }
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploy the application to a staging server using deployment tools like Ansible or Docker."
+            }
+        } // Close stage('Deploy to Staging')
 
-    stage('Deploy to Staging') {
-      steps {
-        echo 'Deploying to the staging environment...'
-       // powershell 'aws deploy --stage staging'
-      }
-    }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Run integration tests on the staging environment to ensure the application works correctly."
+            }
+        } // Close stage('Integration Tests on Staging')
 
-    stage('Integration Tests on Staging') {
-      steps {
-        echo 'Running integration tests on the staging environment...'
-       // powershell 'newman run staging-collection.json'
-      }
-    }
+        stage('Deploy to Production') {
+            steps {
+                echo " Deploy the application to a production server using deployment tools like Ansible or Docker."
+            }
+        } // Close stage('Deploy to Production')
 
-    stage('Deploy to Production') {
-      steps {
-        echo 'Deploying to the production environment...'
-       // powershell 'aws deploy --stage production'
-      }
-    }
-  }
-
-  post {
-    always {
-      echo 'Pipeline execution completed'
-    }
-    failure {
-      echo 'Pipeline failed'
-    }
-  }
-}
+    } // Close stages
+} // Close pipeline
