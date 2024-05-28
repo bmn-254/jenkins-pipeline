@@ -14,12 +14,13 @@ pipeline {
                     script {
                         def log = currentBuild.rawBuild.getLog(1000).join("\n")
                         writeFile file: "build-log.txt", text: log
+                        archiveArtifacts artifacts: 'build-log.txt', allowEmptyArchive: true
                     }
                     emailext(
                         to: "nkongebryan44@gmail.com",
                         subject: "Build Status",
                         body: "The build status was a success!\n\nPlease find the attached build log.",
-                        attachLog: true
+                        attachmentsPattern: 'build-log.txt'
                     )
                 }
             }
