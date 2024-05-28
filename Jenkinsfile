@@ -20,8 +20,8 @@ pipeline {
                     // Send email with the log file attached
                     mail to: "nkongebryan44@gmail.com",
                          subject: "Build Status",
-                         body: "The build status was a success. Please find the attached build log.",
-                         attachmentsPattern: 'build-log.txt'
+                         body: "The build status was a success!\n\nPlease find the attached build log.",
+                         attachments: 'build-log.txt'
                 }
             }
         } // Close stage('Build')
