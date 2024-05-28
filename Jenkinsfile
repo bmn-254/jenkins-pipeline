@@ -12,7 +12,7 @@ pipeline {
             post {
                 success {
                     script {
-                        def log = currentBuild.rawBuild.getLog(1000).join("\n")
+                        def log = currentBuild.rawBuild.getLog().join("\n")
                         writeFile file: "build-log.txt", text: log
                         archiveArtifacts artifacts: 'build-log.txt', allowEmptyArchive: true
                     }
@@ -61,6 +61,5 @@ pipeline {
                 echo "Deploy the application to a production server using deployment tool - Docker."
             }
         } // Close stage('Deploy to Production')
-
     } // Close stages
 } // Close pipeline
