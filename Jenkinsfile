@@ -17,7 +17,7 @@ pipeline {
                     }
                     // Send email with the existing log file attached
                     emailext(
-                        to: "nkongebryan44@gmail.com",
+                        to: "nkongebryanau@gmail.com",
                         subject: "Build Status",
                         body: """The build status was a success!
                                  
@@ -32,7 +32,7 @@ pipeline {
                         archiveArtifacts artifacts: 'existing-log.txt', allowEmptyArchive: true
                     }
                     emailext(
-                        to: "nkongebryan44@gmail.com",
+                        to: "nkongebryanau@gmail.com",
                         subject: "Build Failed",
                         body: """The build failed. Please check the attached log for details.""",
                         attachmentsPattern: 'existing-log.txt',
