@@ -5,8 +5,6 @@ pipeline {
             steps { 
                 echo "Use a build automation tool - Maven to compile and package the code."
                 script {
-                    // Capture the build log
-                    def log = currentBuild.rawBuild.getLog().join("\n")
                     // Write the log to a file
                     writeFile file: 'build-log.txt', text: log
                 }
