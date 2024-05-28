@@ -4,22 +4,25 @@ pipeline {
         stage('Build') { 
             steps { 
                 echo "Use a build automation tool - Maven to compile and package the code."
-                script {
-                    // Write the log to a file
-                    writeFile file: 'build-log.txt', text: log
-                }
             }
             post {
                 success {
                     script {
+                        // Capture the build log
+                        def log = currentBuild.rawBuild.getLog().join("\n")
+                        // Write the log to a file
+                        writeFile file: 'build-log.txt', text: log
                         // Archive the log file so it can be used as an attachment
                         archiveArtifacts artifacts: 'build-log.txt', allowEmptyArchive: true
                     }
                     // Send email with the log file attached
-                    mail to: "nkongebryan44@gmail.com",
-                         subject: "Build Status",
-                         body: "The build status was a success!\n\nPlease find the attached build log.",
-                         attachments: 'build-log.txt'
+                    emailext(
+                        to: "nkongebryan44@gmail.com",
+                        subject: "Build Status",
+                        body: "The build status was a success!\n\nPlease find the attached build log.",
+                        attachLog: true,
+                        attachmentsPattern: 'build-log.txt'
+                    )
                 }
             }
         } // Close stage('Build')
