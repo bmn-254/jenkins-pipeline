@@ -18,12 +18,12 @@ pipeline {
                         archiveArtifacts artifacts: 'build-log.txt', allowEmptyArchive: true
                     }
                     // Send email with the log file attached
-                    success(
-                        mail to: "nkongebryan44@gmail.com",
+                    emailext(
+                        to: "nkongebryan44@gmail.com",
                         subject: "Build Status",
-                        body: "The build status was a success!"
+                        body: """The build status was a success!
                                  
-                                 "Please find the attached build log.",
+                                 Please find the attached build log.""",
                         attachLog: true,
                         attachmentsPattern: 'build-log.txt'
                     )
@@ -37,10 +37,10 @@ pipeline {
                         // Archive the log file so it can be used as an attachment
                         archiveArtifacts artifacts: 'build-log.txt', allowEmptyArchive: true
                     }
-                    success(
-                        mail to: "nkongebryan44@gmail.com",
+                    emailext(
+                        to: "nkongebryan44@gmail.com",
                         subject: "Build Failed",
-                        body: "The build failed. Please check the attached log for details.",
+                        body: """The build failed. Please check the attached log for details.""",
                         attachLog: true,
                         attachmentsPattern: 'build-log.txt'
                     )
