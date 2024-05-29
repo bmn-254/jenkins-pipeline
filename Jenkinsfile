@@ -13,7 +13,7 @@ pipeline {
                 // Using Maven for build
                 script {
                     try {
-                        sh 'mvn clean package'
+                        bat 'mvn clean package'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Build failed: ${e.message}"
@@ -27,7 +27,7 @@ pipeline {
                 // Running unit tests with JUnit and integration tests
                 script {
                     try {
-                        sh 'mvn test'
+                        bat 'mvn test'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Tests failed: ${e.message}"
@@ -46,7 +46,7 @@ pipeline {
                 // Using SonarQube for code analysis
                 script {
                     try {
-                        sh 'mvn sonar:sonar'
+                        bat 'mvn sonar:sonar'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Code analysis failed: ${e.message}"
@@ -60,7 +60,7 @@ pipeline {
                 // Using OWASP Dependency-Check for security scanning
                 script {
                     try {
-                        sh 'mvn dependency-check:check'
+                        bat 'mvn dependency-check:check'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Security scan failed: ${e.message}"
@@ -74,7 +74,7 @@ pipeline {
                 // Deploying to AWS EC2 instance
                 script {
                     try {
-                        sh 'scp target/myapp.jar ec2-user@staging-server:/path/to/deploy'
+                        bat 'scp target\\myapp.jar ec2-user@staging-server:/path/to/deploy'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Deploy to Staging failed: ${e.message}"
@@ -88,7 +88,7 @@ pipeline {
                 // Running integration tests on staging
                 script {
                     try {
-                        sh 'ssh ec2-user@staging-server "/path/to/run-tests.sh"'
+                        bat 'ssh ec2-user@staging-server "/path/to/run-tests.sh"'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Staging integration tests failed: ${e.message}"
@@ -102,7 +102,7 @@ pipeline {
                 // Deploying to production server
                 script {
                     try {
-                        sh 'scp target/myapp.jar ec2-user@production-server:/path/to/deploy'
+                        bat 'scp target\\myapp.jar ec2-user@production-server:/path/to/deploy'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Deploy to Production failed: ${e.message}"
