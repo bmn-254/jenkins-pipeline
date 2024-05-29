@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variables for email configuration
         EMAIL_RECIPIENT = 'nkongebryan44@gmail.com'
     }
 
@@ -11,7 +10,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building the code...'
-                    // Simulate build log
                     writeFile file: 'build.log', text: 'Build log content here...'
                 }
             }
@@ -21,7 +19,6 @@ pipeline {
             steps {
                 script {
                     echo 'Running unit and integration tests...'
-                    // Simulate test log
                     writeFile file: 'test.log', text: 'Test log content here...'
                 }
             }
@@ -31,7 +28,6 @@ pipeline {
             steps {
                 script {
                     echo 'Performing code analysis...'
-                    // Simulate code analysis log
                     writeFile file: 'code_analysis.log', text: 'Code analysis log content here...'
                 }
             }
@@ -41,7 +37,6 @@ pipeline {
             steps {
                 script {
                     echo 'Performing security scan...'
-                    // Simulate security scan log
                     writeFile file: 'security_scan.log', text: 'Security scan log content here...'
                 }
             }
@@ -49,23 +44,13 @@ pipeline {
     }
 
     post {
-        success {
+        always {
             script {
-                echo 'Sending success email notification...'
+                echo 'Sending email notification...'
                 emailext (
-                    subject: "Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: "The build completed successfully. Logs are attached.",
-                    to: "${env.EMAIL_RECIPIENT}",
-                    attachmentsPattern: '**/*.log'
-                )
-            }
-        }
-        failure {
-            script {
-                echo 'Sending failure email notification...'
-                emailext (
-                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: "The build failed. Please check the attached logs for details.",
+                    subject: "Build ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """<p>Build ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}</p>
+                             <p>Check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME} #${env.BUILD_NUMBER}</a> to view the results.</p>""",
                     to: "${env.EMAIL_RECIPIENT}",
                     attachmentsPattern: '**/*.log'
                 )
