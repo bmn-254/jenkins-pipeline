@@ -1,59 +1,92 @@
 pipeline {
     agent any
-
-    environment {
-        EMAIL_RECIPIENT = 'nkongebryan44@gmail.com'
-    }
-
+    
     stages {
         stage('Build') {
             steps {
-                script {
-                    echo 'Building the code...'
-                    writeFile file: 'build.log', text: 'Build log content here...'
-                }
+                echo 'Build Android project using Gradle'
+                // sh './gradlew clean assembleDebug'
             }
         }
-
+        
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo 'Running unit and integration tests...'
-                    writeFile file: 'test.log', text: 'Test log content here...'
+                echo 'Run unit tests here'
+            }
+
+            post {
+                success {
+                    echo 'Unit tests completed successfully'
+                    emailext(
+                        to: 'nkongebryan44@gmail.com',
+                        subject:"The status of the Unit and Integration Tests: ${currentBuild.result}",
+                        body:'Log files are attached for additional information about the process',
+                        attachLog: true
+                    )
+                }
+                failure {
+                    echo 'Unit tests failed'
+                    emailext(
+                        to: 'nkongebryan44@gmail.com',
+                        subject:"The status of the Unit and Integration Tests: ${currentBuild.result}",
+                        body:'Log files are attached for additional information about the process',
+                        attachLog: true
+                    )
                 }
             }
         }
-
+        
         stage('Code Analysis') {
             steps {
-                script {
-                    echo 'Performing code analysis...'
-                    writeFile file: 'code_analysis.log', text: 'Code analysis log content here...'
-                }
+                echo 'Integrate code analysis tool (e.g., SonarQube)'
             }
         }
-
+        
         stage('Security Scan') {
             steps {
-                script {
-                    echo 'Performing security scan...'
-                    writeFile file: 'security_scan.log', text: 'Security scan log content here...'
+                echo 'Perform security scan using a tool like OWASP Dependency-Check'
+            }
+
+            post {
+                success {
+                    echo 'Security Scan completed successfully'
+                    emailext(
+                        to: 'nkongebryan44@gmail.com',
+                        subject:"The status of the Security Scan: ${currentBuild.result}",
+                        body:'Log files are attached for additional information about the process',
+                        attachLog: true
+                    )
+                }
+                failure {
+                    echo 'Security Scan failed'
+                    emailext(
+                        to: 'nkongebryan44@gmail.com',
+                        subject:"The status of the Security Scan: ${currentBuild.result}",
+                        body:'Log files are attached for additional information about the process',
+                        attachLog: true
+                    )
                 }
             }
         }
-    }
-
-    post {
-        always {
-            script {
-                echo 'Sending email notification...'
-                emailext (
-                    subject: "Build ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: """<p>Build ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}</p>
-                             <p>Check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME} #${env.BUILD_NUMBER}</a> to view the results.</p>""",
-                    to: "${env.EMAIL_RECIPIENT}",
-                    attachmentsPattern: '**/*.log'
-                )
+        
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploy the application to a staging server (e.g., AWS)'
+                // Implement deployment commands here
+            }
+        }
+        
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Run integration tests on the staging environment'
+                // Implement staging integration test commands here
+            }
+        }
+        
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploy the application to a production server (e.g., AWS)'
+                // Implement production deployment commands here
             }
         }
     }
