@@ -4,32 +4,32 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Build Android project using Gradle'
-                // sh './gradlew clean assembleDebug'
+                echo 'This is a test build for GitHub and Jenkins'
+                // sh './GitHub/Jenkins'
             }
         }
         
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Run unit tests here'
+                echo 'This stage is used to run tests'
             }
 
             post {
                 success {
-                    echo 'Unit tests completed successfully'
+                    echo 'The tests were completed successfully'
                     emailext(
                         to: 'nkongebryan44@gmail.com',
-                        subject:"The status of the Unit and Integration Tests: ${currentBuild.result}",
-                        body:'Log files are attached for additional information about the process',
+                        subject:"Unit and Integration Tests Status: ${currentBuild.result}",
+                        body:'Kindly find attached the log files with more information',
                         attachLog: true
                     )
                 }
                 failure {
-                    echo 'Unit tests failed'
+                    echo 'Unit tests were not successful'
                     emailext(
                         to: 'nkongebryan44@gmail.com',
-                        subject:"The status of the Unit and Integration Tests: ${currentBuild.result}",
-                        body:'Log files are attached for additional information about the process',
+                        subject:"Unit and Integration Tests Status: ${currentBuild.result}",
+                        body:'Kindly find attached the log files with more information',
                         attachLog: true
                     )
                 }
@@ -44,25 +44,25 @@ pipeline {
         
         stage('Security Scan') {
             steps {
-                echo 'Perform security scan using a tool like OWASP Dependency-Check'
+                echo 'Perform security scan using OWASP Dependency-Check'
             }
 
             post {
                 success {
-                    echo 'Security Scan completed successfully'
+                    echo 'Security Scan was a success'
                     emailext(
                         to: 'nkongebryan44@gmail.com',
-                        subject:"The status of the Security Scan: ${currentBuild.result}",
-                        body:'Log files are attached for additional information about the process',
+                        subject:"Security Satus: ${currentBuild.result}",
+                        body:'Kindly find attached the log files with more information',
                         attachLog: true
                     )
                 }
                 failure {
-                    echo 'Security Scan failed'
+                    echo 'Security Scan were not successful'
                     emailext(
                         to: 'nkongebryan44@gmail.com',
-                        subject:"The status of the Security Scan: ${currentBuild.result}",
-                        body:'Log files are attached for additional information about the process',
+                        subject:"Security Scan Status: ${currentBuild.result}",
+                        body:'Kindly find attached the log files with more information',
                         attachLog: true
                     )
                 }
@@ -71,22 +71,22 @@ pipeline {
         
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploy the application to a staging server (e.g., AWS)'
-                // Implement deployment commands here
+                echo 'Deploy the application to a staging server (like AWS)'
+                // Deployment of Implementation commands
             }
         }
         
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Run integration tests on the staging environment'
-                // Implement staging integration test commands here
+                // Deployment of Staging Integration tests
             }
         }
         
         stage('Deploy to Production') {
             steps {
                 echo 'Deploy the application to a production server (e.g., AWS)'
-                // Implement production deployment commands here
+                // Deployment of Production Deployment commands
             }
         }
     }
